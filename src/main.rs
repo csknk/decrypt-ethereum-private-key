@@ -2,7 +2,6 @@ extern crate serde_json;
 extern crate aes_ctr;
 mod utilities;
 mod data_process;
-mod hashing;
 mod decrypt;
 use std::env;
 use std::fs;
@@ -10,8 +9,8 @@ use std::io;
 use std::io::{Error, ErrorKind};
 use crate::utilities::bytes_to_hexstring;
 use crate::data_process::Data;
-use crate::hashing::derive_key;
-use crate::hashing::check_key;
+use crate::decrypt::derive_key;
+use crate::decrypt::check_key;
 use crate::decrypt::decrypt;
 
 fn usage_line(name: &String) -> String {
@@ -46,15 +45,15 @@ fn main() -> Result<(), Error> {
     let mut data = Data::new(raw_data); 
     data.password = password.into_bytes();
     
-    let key = derive_key(&data).unwrap();
+    //let key = derive_key(&data).unwrap();
+    // For dev purposes, remove
+    use crate::utilities::hexstring_to_bytes;
+    let key = hexstring_to_bytes("5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84".to_string()).unwrap();
+    
     if !check_key(&data, &key) {
         eprintln!("Wrong password");
         std::process::exit(1);
     }
-    // For dev purposes, remove
-    //use crate::utilities::hexstring_to_bytes;
-    //let key = hexstring_to_bytes("5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84".to_string()).unwrap();
-    
     let plaintext: Vec<u8> = decrypt(&data, &key).unwrap();
     println!("{}", bytes_to_hexstring(&plaintext));
     Ok(())
