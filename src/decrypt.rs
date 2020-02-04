@@ -4,7 +4,7 @@ use crypto::scrypt::ScryptParams;
 use crypto::scrypt::scrypt;
 use self::crypto::digest::Digest;
 use self::crypto::sha3::Sha3;
-use crate::utilities::bytes_to_hexstring;
+//use crate::utilities::bytes_to_hexstring;
 
 /**
  * Derive key for decryption by means of scrypt with the provided parameters from the original
@@ -62,6 +62,11 @@ pub fn decrypt(data: &Data, key: &Vec<u8>) -> Result<Vec<u8>, &'static str> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+//    #[test]
+//    fn correct_key_derivation() {
+//    
+//    }
 
     #[test]
     fn correct_key_decryption() {
