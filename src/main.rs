@@ -45,10 +45,10 @@ fn main() -> Result<(), Error> {
     let mut data = Data::new(raw_data); 
     data.password = password.into_bytes();
     
-    //let key = derive_key(&data).unwrap();
+    let key = derive_key(&data).unwrap();
     // For dev purposes, remove
-    use crate::utilities::hexstring_to_bytes;
-    let key = hexstring_to_bytes("5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84".to_string()).unwrap();
+    //use crate::utilities::hexstring_to_bytes;
+    //let key = hexstring_to_bytes("5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84".to_string()).unwrap();
     
     if !check_key(&data, &key) {
         eprintln!("Wrong password");
