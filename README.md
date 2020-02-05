@@ -93,10 +93,14 @@ The correct private key is also provided in [correct-result][16].
 
 Usage
 -----
-* Install dependencies listed in `requirements.txt`.
-* Run `./main.py` with a path to an Ethereum keyfile as the first command-line argument.
-* Enter your password when prompted.
+* Clone this repo, `cd` into the project root.
+* Run `cargo run` with a path to an Ethereum keyfile as the first command-line argument - test file in project root.
+* Enter your password when prompted - for the test file, the password is `password123`.
 * If the password is correct, the private key will be output to stdout.
+* If testing against the supplied test keyfile, check the result against [correct-result][16].
+
+### Tests
+Run `cargo test` to test the key derivation, authentication and decryption functions.
 
 Encryption of Keys in Ethereum
 ------------------------------
@@ -122,7 +126,7 @@ Requires the user-supplied password and the `crypto.kdfparams`.
 Uses `crypto::scrypt::scrypt` function from the [rust-crypto crate][18]
 
 From [decrypt.rs][8]: 
-```rs
+```rust
 /**
  * Derive key for decryption by means of scrypt with the provided parameters from the original
  * keyfile along with the user-supplied password (`data.password`).
@@ -158,7 +162,7 @@ Note that for AES 128 bit counter mode the aes_key must be 16 bytes, but the Eth
 
 The web3 protocol requires using the first 16 bytes of the derived key to AES decrypt ciphertext in AES-128 counter mode.
 
-```rs
+```rust
 
 pub fn decrypt(data: &Data, key: &Vec<u8>) -> Result<Vec<u8>, &'static str> {
     use aes_ctr::Aes128Ctr;
