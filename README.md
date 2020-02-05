@@ -207,7 +207,7 @@ References
 [5]: https://github.com/ethereum/go-ethereum
 [6]: https://en.wikipedia.org/wiki/Scrypt
 [7]: /password_verify.py
-[8]: /decrypt.rs#L12
+[8]: /src/decrypt.rs#L12
 [9]: https://pycryptodome.readthedocs.io/en/latest/src/cipher/cipher.html
 [10]: https://cryptobook.nakov.com/symmetric-key-ciphers/ethereum-wallet-encryption
 [11]: https://en.bitcoin.it/wiki/Wallet_encryption
