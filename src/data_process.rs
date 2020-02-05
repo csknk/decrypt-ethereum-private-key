@@ -23,10 +23,10 @@ impl Default for Data {
             mac: vec![],
             iv: vec![],
             password: vec![],
-            n: 0, 
-            r: 0,
-            p: 0,
-            dklen: 0,
+            n: 262144, 
+            r: 8,
+            p: 1,
+            dklen: 32,
             maxmem: 2000000000
         }
     }

@@ -4,7 +4,6 @@ use crypto::scrypt::ScryptParams;
 use crypto::scrypt::scrypt;
 use self::crypto::digest::Digest;
 use self::crypto::sha3::Sha3;
-//use crate::utilities::bytes_to_hexstring;
 
 /**
  * Derive key for decryption by means of scrypt with the provided parameters from the original
@@ -16,7 +15,7 @@ pub fn derive_key(data: &Data) -> Result<Vec<u8>, &'static str> {
     let log_2_n = n as u8;
     let params = ScryptParams::new(log_2_n, data.r, data.p);
     let mut result: Vec<u8> = vec![0; data.dklen as usize];
-    scrypt(&(data.password), &(data.salt), &params, &mut result);
+    scrypt(&data.password, &data.salt, &params, &mut result);
     Ok(result.to_vec())
 }
 
@@ -63,13 +62,32 @@ pub fn decrypt(data: &Data, key: &Vec<u8>) -> Result<Vec<u8>, &'static str> {
 mod tests {
     use super::*;
 
-//    #[test]
-//    fn correct_key_derivation() {
-//    
-//    }
+    #[test]
+    fn correct_derive_key() {
+        let key = vec![
+            0x5a, 0xe6, 0xf8, 0x78, 0x53, 0x37, 0x64, 0x5b,
+            0x7c, 0xed, 0xd5, 0x3f, 0x71, 0x28, 0x63, 0xb7,
+            0x0c, 0xc0, 0x61, 0x5f, 0x48, 0xf1, 0x8a, 0x3e,
+            0x27, 0xa8, 0xf9, 0x22, 0xed, 0xc1, 0x3a, 0x84,
+        ];
+        let salt = vec![
+            0xb0, 0x4d, 0xcc, 0xcf, 0x35, 0x1d, 0xba, 0x67,
+            0x46, 0x0e, 0x5b, 0xf3, 0x22, 0x49, 0x3a, 0xb2,
+            0x5b, 0x4e, 0x1b, 0x31, 0x4d, 0xf9, 0x70, 0x50,
+            0x3e, 0xd4, 0x3c, 0x39, 0x21, 0x66, 0xd4, 0xc8,
+        ];
+        let password = b"password123".to_vec();
+        let data = Data {
+            salt: salt,
+            password: password,
+            ..Default::default()
+        };
+        println!("{:?}", data);
+        assert_eq!(key, derive_key(&data).unwrap());
+    }
 
     #[test]
-    fn correct_key_decryption() {
+    fn correct_decrypt() {
         // Values from sample keyfile
         let ct = vec![
             0x05, 0x0d, 0x93, 0xd6, 0xa4, 0xe3, 0x96, 0xa0,
