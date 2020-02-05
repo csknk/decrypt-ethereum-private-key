@@ -1,7 +1,7 @@
 # Decrypt Ethereum Private Key
 Rust project that decrypts an Ethereum keyfile to recover the original private key.
 
-I recently built the same functionality in a Python project, and wanted to see how to create the same functionality in Rust.
+I recently built the same functionality in a [Python project][19], and wanted to see how to create the same functionality in Rust.
 
 __Be careful with your private keys__. If you use this repo to decrypt your private key from an Ethereum keyfile and a malicious person gets hold of it, they gain control over the funds held by that private key.
 
@@ -14,13 +14,13 @@ Note that the `scrypt` key derivation function used in this project is slow. I h
 Table of Contents
 -----------------
 * [Introduction](#introduction)
-* [Generate an Ethereum Keyfile](#generate-an-ethereum-keyfile)
+* [Build Instructions](#build-instructions)
 * [Usage](#usage)
+* [Generate an Ethereum Keyfile](#generate-an-ethereum-keyfile)
 * [Encryption of Keys in Ethereum](#encryption-of-keys-in-ethereum)
 * [Key Derivation](#key-derivation)
 * [Verify Password by Message Authentication](#verify-password-by-message-authentication)
 * [Decryption](#decryption)
-* [Dependencies](#dependencies)
 * [References](#references)
 
 Introduction
@@ -46,6 +46,20 @@ The Ethereum approach is interesting in that keyfiles contain information relati
 Ethereum keyfiles are JSON text files that are comprised of a symmetrically encrypted private key along with additional metadata relating to the encryption scheme.
 
 Keyfiles are stored by default in a `keystore` directory, and are human readable. Each keyfile provides the encrypted key, along with the metadata required to decrypt it.
+
+Build Instructions
+------------------
+Requires `rustc`: if `cargo` is installed, move into the project repo and run `cargo run` or `cargo build`.
+
+Usage
+-----
+* Run `cargo run` with a path to an Ethereum keyfile as the first command-line argument - test file in project root.
+* Enter your password when prompted - for the test file, the password is `password123`.
+* If the password is correct, the private key will be output to stdout.
+* If testing against the supplied test keyfile, check the result against [correct-result][16].
+
+### Tests
+Run `cargo test` to test the key derivation, authentication and decryption functions.
 
 Generate an Ethereum Keyfile
 ----------------------------
@@ -93,17 +107,6 @@ This keyfile is included in this repo: [UTC--2019-12-17T09-17-16.419911545Z--15d
 
 The correct private key is also provided in [correct-result][16].
 
-Usage
------
-* Clone this repo, `cd` into the project root.
-* Run `cargo run` with a path to an Ethereum keyfile as the first command-line argument - test file in project root.
-* Enter your password when prompted - for the test file, the password is `password123`.
-* If the password is correct, the private key will be output to stdout.
-* If testing against the supplied test keyfile, check the result against [correct-result][16].
-
-### Tests
-Run `cargo test` to test the key derivation, authentication and decryption functions.
-
 Encryption of Keys in Ethereum
 ------------------------------
 The keyfile holds the encrypted private key in the `crypto.ciphertext` field.
@@ -121,8 +124,8 @@ Relevant fields are:
 * `crypto.kdfparams`: These variables are used in the kdf function - see [decrypt.rs][8], [scrypt wikipedia][6]
 * `crypto.mac`: Message authentication code - used to check the authenticity of the key derived from the user-supplied password.
 
-Key Derivation: Scrypt
-----------------------
+Key Derivation
+--------------
 Requires the user-supplied password and the `crypto.kdfparams`.
 
 Uses `crypto::scrypt::scrypt` function from the [rust-crypto crate][18]
@@ -181,26 +184,19 @@ pub fn decrypt(data: &Data, key: &Vec<u8>) -> Result<Vec<u8>, &'static str> {
 }
 ```
 
-Dependencies
-------------
-Project developed on Ubuntu 16.04.
-
-Requires `rustc`: if `cargo` is installed, move into the project repo and run `cargo run` or `cargo build`.
-
 References
 ----------
 * [Good description of Ethereum wallet encryption][10]
+* [Web3 Secret Storage Definition][17]
 * [Bitcoin wallet encryption][11]
-* [Pysha3][1] - SHA-3 wrapper(keccak) for Python
 * [Keccak code package][2]
 * [Keccak hashing: SHA-3][14]
 * [Useful Stack Exchange answer][3]
-* [Bitcoin Core dumpprivkey command][4]
+* [Bitcoin Core dumpprivkey command][4], Bitcoin developer reference
 * [Go Ethereum][5], GitHub repo
-* [scrypt key derivation function][6]
+* [scrypt key derivation function][6], Wikipedia
 * [Create an AES cipher using Python Crypto.Cipher.AES][12]
 * [Scrypt in rust-crypto crate][20]
-
 
 [1]: https://pypi.org/project/pysha3/
 [2]: https://github.com/XKCP/XKCP
