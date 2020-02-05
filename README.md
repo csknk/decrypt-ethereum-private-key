@@ -9,6 +9,8 @@ The objective of this project is to replicate a key component of any wallet - de
 
 If you want to make a backup of Ethereum keys, just backup the keyfiles - the private key is encrypted already, and any Ethereum client should be able to use the keyfile format. This assumes of course that you have used a strong passphrase to secure your keys. 
 
+Note that the `scrypt` key derivation function used in this project is slow. I have a similar project in Python [here][19] which is much quicker. I'm still trying to work out why the Rust implementation of scrypt takes so much longer (minutes rather than ~ 1 second) to achieve the same result.
+
 Table of Contents
 -----------------
 * [Introduction](#introduction)
@@ -197,7 +199,7 @@ References
 * [Go Ethereum][5], GitHub repo
 * [scrypt key derivation function][6]
 * [Create an AES cipher using Python Crypto.Cipher.AES][12]
-* [Creeat a counter function using Python Crypto.Util.Counter][13]
+* [Scrypt in rust-crypto crate][20]
 
 
 [1]: https://pypi.org/project/pysha3/
@@ -218,3 +220,5 @@ References
 [16]: /correct-result
 [17]: https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
 [18]: https://docs.rs/rust-crypto/0.2.36/crypto/scrypt/index.html
+[19]: https://github.com/csknk/decrypt-ethereum-keyfile
+[20]: https://github.com/DaGenix/rust-crypto/blob/master/src/scrypt.rs
