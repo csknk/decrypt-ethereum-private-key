@@ -9,7 +9,7 @@ The objective of this project is to replicate a key component of any wallet - de
 
 If you want to make a backup of Ethereum keys, just backup the keyfiles - the private key is encrypted already, and any Ethereum client should be able to use the keyfile format. This assumes of course that you have used a strong passphrase to secure your keys. 
 
-Note that the `scrypt` key derivation function used in this project is slow. I have a similar project in Python [here][19] which is much quicker. I'm still trying to work out why the Rust implementation of scrypt takes so much longer (minutes rather than ~ 1 second) to achieve the same result.
+__Note:__ the `scrypt` key derivation function used in this project is __very slow__. I have a similar project in Python [here][19] which is much quicker. I'm still trying to work out why the Rust implementation of scrypt takes so much longer (minutes rather than ~ 1 second) to achieve the same result.
 
 Table of Contents
 -----------------

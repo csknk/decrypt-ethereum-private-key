@@ -54,7 +54,7 @@ fn main() -> Result<(), Error> {
     data.password = password.into_bytes();
     
     let key = derive_key(&data).unwrap();
-    // For dev purposes, remove
+    // For dev purposes - scrypt function is very slow.
     //use crate::utilities::hexstring_to_bytes;
     //let key = hexstring_to_bytes("5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84".to_string()).unwrap();
     
