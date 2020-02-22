@@ -47,14 +47,15 @@ Ethereum keyfiles are JSON text files that are comprised of a symmetrically encr
 
 Keyfiles are stored by default in a `keystore` directory, and are human readable. Each keyfile provides the encrypted key, along with the metadata required to decrypt it.
 
-Build Instructions
-------------------
-Requires `rustc`: if `cargo` is installed, move into the project repo and run `cargo run` or `cargo build`.
+Build & Usage Instructions
+---------------------------
+Requires `rustc`.
 
-Usage
------
-* Run `cargo run` with a path to an Ethereum keyfile as the first command-line argument - test file in project root.
-* Enter your password when prompted - for the test file, the password is `password123`.
+If `cargo` is installed:
+
+* Build an executable: `cargo build --release`
+* Run `./target/release/decrypt-ethereum-private-key` with a path to an Ethereum keyfile as the first command-line argument - a sample keyfile is provided in this repo's root.
+* Enter password when prompted - for the test file, the password is `password123`.
 * If the password is correct, the private key will be output to stdout.
 * If testing against the supplied test keyfile, check the result against [correct-result][16].
 
@@ -146,7 +147,7 @@ pub fn derive_key(data: &Data) -> Result<Vec<u8>, &'static str> {
     Ok(result.to_vec())
 }
 ```
-__NOTE: this implementation of scrypt is slow__.
+__NOTE: in debug builds (i.e. `cargo run`) this implementation of scrypt is very slow__. It's much faster in the release build, but for debugging/development purposes, you may wish to skip the key derivation step in the interests of speeding things up.
 
 Verify Password by Message Authentication
 -----------------------------------------
