@@ -5,6 +5,14 @@
 // You may obtain a copy of the License at
 // 
 // http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Note: In development (i.e. `cargo run`), the scrypt key derivation is very slow.
+// It might be useful to skip the key derivation, using a known key derived from a 
+// test keyfile. Replace the `let key` assignment with: 
+// use crate::utilities::hexstring_to_bytes;
+// let key_hexstr = "5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84";
+// let key = hexstring_to_bytes(key_hexstr.to_string()).unwrap();
+    
 
 extern crate serde_json;
 extern crate aes_ctr;
@@ -54,10 +62,6 @@ fn main() -> Result<(), Error> {
     data.password = password.into_bytes();
     
     let key = derive_key(&data).unwrap();
-    // For dev purposes - scrypt function is very slow.
-    //use crate::utilities::hexstring_to_bytes;
-    //let key = hexstring_to_bytes("5ae6f8785337645b7cedd53f712863b70cc0615f48f18a3e27a8f922edc13a84".to_string()).unwrap();
-    
     if !check_key(&data, &key) {
         eprintln!("Wrong password");
         std::process::exit(1);
